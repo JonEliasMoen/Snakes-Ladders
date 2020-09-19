@@ -21,15 +21,18 @@ public class MainMenu {
 
         JButton rollDice = new JButton("Roll a Dice");
         JButton maxClicks = new JButton("Max Clicks");
+        JButton snakeLadder = new JButton("Snakes&Ladders");
         JButton exit = new JButton("Exit Game");
 
         rollDice.setBounds(150, 120, buttonWidth, buttonHeight);
         maxClicks.setBounds(150, 170, buttonWidth, buttonHeight);
+        snakeLadder.setBounds(150, 220, buttonWidth, buttonHeight);
         exit.setBounds(280, 300, buttonWidth, buttonHeight);
 
         menu.add(title);
         menu.add(maxClicks);
         menu.add(rollDice);
+        menu.add(snakeLadder);
         menu.add(exit);
         menu.setSize(size, size);
         menu.setLocationRelativeTo(null);
@@ -39,6 +42,7 @@ public class MainMenu {
 
         rollDice.addActionListener(e -> new DiceRollGame());
         maxClicks.addActionListener(e -> new MaxClickGame());
+        snakeLadder.addActionListener(e -> new SnakesLadders());
         exit.addActionListener(e -> menu.dispose());
     }
 
