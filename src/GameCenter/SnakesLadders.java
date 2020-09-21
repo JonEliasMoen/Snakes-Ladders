@@ -42,7 +42,7 @@ public class SnakesLadders {
         dh.roll(d1);
 
         // p1/p2 turn
-        JTextArea turnInfo = new JTextArea("player x turn 4");
+        JTextArea turnInfo = new JTextArea("player x turn 5");
 
 
 
