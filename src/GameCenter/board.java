@@ -7,8 +7,6 @@ public class board {
     public ArrayList<ArrayList<JButton>> Bboard;
 
     public static void createBoard(JFrame main){
-        JButton test = new JButton("start");
-        test.setBounds()
 
     }
     public static void updateBoard(JFrame main){}{
