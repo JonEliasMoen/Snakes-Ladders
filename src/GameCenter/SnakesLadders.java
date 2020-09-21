@@ -1,20 +1,16 @@
 package GameCenter;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.Timer;
-import java.util.ArrayList;
+
+import javax.swing.*;
 
 public class SnakesLadders {
     public int boardButtonSize = 10; // board button
-    public int[] wSize = {400,400}; // hver celle er en classe eller struct?
-    public double[][] board = {{0,0,0,0,0,-3}, // -1.2 finish, -1.1 start
-                            {0,0,0,0,0,0}, // 1-n player n
-                            {0,0,0,0,0,0}, //
-                            {0,0,0,0,0,0},
-                            {0,0,0,0,0,0},
-                            {-2,0,0,0,0,0}};
+    public int[] wSize = {400, 400}; // hver celle er en classe eller struct?
+    public double[][] board = {{0, 0, 0, 0, 0, -3}, // -1.2 finish, -1.1 start
+            {0, 0, 0, 0, 0, 0}, // 1-n player n
+            {0, 0, 0, 0, 0, 0}, //
+            {0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0},
+            {-2, 0, 0, 0, 0, 0}};
 
 
     final public diceHandler dh = new diceHandler();
@@ -42,8 +38,7 @@ public class SnakesLadders {
         dh.roll(d1);
 
         // p1/p2 turn
-        JTextArea turnInfo = new JTextArea("player x turn 5");
-
+        JTextArea turnInfo = new JTextArea("player x");
 
 
 
