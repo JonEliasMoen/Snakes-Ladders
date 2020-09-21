@@ -1,5 +1,6 @@
 package GameCenter;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class SnakesLadders {
 
 
     final public diceHandler dh = new diceHandler();
+    final public board mainBoard = new board();
 
     public SnakesLadders() {
         JFrame mainframe = new JFrame("Snakes&Ladders");
@@ -30,10 +32,23 @@ public class SnakesLadders {
         mainframe.setVisible(true); // is visable
         mainframe.setLayout(new BorderLayout());
 
+        //toolbar
+        Container contentPane = mainframe.getContentPane();
+        JToolBar tb = new JToolBar();
+        JButton tbStart = new JButton("Start");
+        JButton tbReset = new JButton("Reset");
+        JButton tbExit = new JButton("Exit");
+
+        tb.add(tbStart); tb.add(tbReset); tb.add(tbExit);
+        tb.setFloatable(false);
+        mainframe.add(tb, BorderLayout.NORTH);
+
+        //mainframe.add(tb);
+
         // dice rolls
         int dOffset = 25;
         int diceSize = 30;
-        int diceY = 40;
+        int diceY = 100;
         JPanel dicePanel = new JPanel();
         JTextField d1 = new JTextField("D1");
         JTextField d2 = new JTextField("D2");
@@ -57,27 +72,31 @@ public class SnakesLadders {
         dicePanel.add(roll);
         mainframe.add(dicePanel);
 
-        //toolbar
-        JToolBar tb = new JToolBar();
-        JPanel tbPanel = new JPanel();
-        JButton tbStart = new JButton("Start");
-        JButton tbReset = new JButton("Reset");
-        JButton tbExit = new JButton("Exit");
-        tbPanel.add(tbStart);
-        tbPanel.add(tbReset);
-        tbPanel.add(tbExit);
-        tb.add(tbPanel);
-        tb.setFloatable(false);
-        mainframe.add(tb, BorderLayout.NORTH);
+        mainBoard.createBoard(mainframe);
 
-        dh.roll(d1);
+        JPanel fullboard = new JPanel(new GridLayout(6,1));
+        JButton[][] Bboard = new JButton[6][6];
+        JPanel[] bPanel = new JPanel[6];
 
+        for (int i = 0; i < 6; i++) {
+            bPanel[i] = new JPanel();
+            for (int j = 0; j < 6; j++) {
+                Bboard[i][j] = new JButton(String.valueOf((5 - i) * 6 + (j + 1)));
+                bPanel[i].add(Bboard[i][j]);
+            }
+            fullboard.add(bPanel[i]);
+        }
+        mainframe.add(fullboard, BorderLayout.AFTER_LAST_LINE);
         // p1/p2 turn
         JTextArea turnInfo = new JTextArea("player x");
 
+        //mainframe.add(turnInfo);
 
+        // actionlisteners
+        tbExit.addActionListener(e -> {
+            mainframe.dispose();
+        });
 
-
-
+        //mainframe.pack();
     }
 }

@@ -1,18 +1,24 @@
 package GameCenter;
 
 import javax.swing.*;
-import java.util.ArrayList;
+import java.awt.*;
 
 public class board {
-    public ArrayList<ArrayList<JButton>> Bboard;
 
-    public static void createBoard(JFrame main){
 
-    }
-    public static void updateBoard(JFrame main){}{
+    public void createBoard(JFrame main) {
 
     }
-    public static void generateBoard(){ }
-    public static void move(){ }
-    public static void moveHandler(){ }
+
+    public void updateBoard(JFrame main) {
+    }
+
+    public void generateBoard() {
+    }
+
+    public void move() {
+    }
+
+    public void moveHandler() {
+    }
 }
