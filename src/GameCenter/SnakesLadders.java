@@ -18,6 +18,7 @@ public class SnakesLadders {
 
 
     final public diceHandler dh = new diceHandler();
+    final public board mainBoard = new board();
 
     public SnakesLadders() {
         JFrame mainframe = new JFrame("Snakes&Ladders");
@@ -30,10 +31,23 @@ public class SnakesLadders {
         mainframe.setVisible(true); // is visable
         mainframe.setLayout(new BorderLayout());
 
+        //toolbar
+        JToolBar tb = new JToolBar();
+        JPanel tbPanel = new JPanel();
+        JButton tbStart = new JButton("Start");
+        JButton tbReset = new JButton("Reset");
+        JButton tbExit = new JButton("Exit");
+        tbPanel.add(tbStart);
+        tbPanel.add(tbReset);
+        tbPanel.add(tbExit);
+        tb.add(tbPanel);
+        tb.setFloatable(false);
+        mainframe.add(tb, BorderLayout.NORTH);
+
         // dice rolls
         int dOffset = 25;
         int diceSize = 30;
-        int diceY = 40;
+        int diceY = 100;
         JPanel dicePanel = new JPanel();
         JTextField d1 = new JTextField("D1");
         JTextField d2 = new JTextField("D2");
@@ -55,28 +69,19 @@ public class SnakesLadders {
         dicePanel.add(sum);
 
         dicePanel.add(roll);
-        mainframe.add(dicePanel);
+        mainframe.add(dicePanel, BorderLayout.CENTER);
 
-        //toolbar
-        JToolBar tb = new JToolBar();
-        JPanel tbPanel = new JPanel();
-        JButton tbStart = new JButton("Start");
-        JButton tbReset = new JButton("Reset");
-        JButton tbExit = new JButton("Exit");
-        tbPanel.add(tbStart);
-        tbPanel.add(tbReset);
-        tbPanel.add(tbExit);
-        tb.add(tbPanel);
-        tb.setFloatable(false);
-        mainframe.add(tb, BorderLayout.NORTH);
-
-        dh.roll(d1);
+        mainBoard.createBoard(mainframe);
 
         // p1/p2 turn
         JTextArea turnInfo = new JTextArea("player x");
 
+        //mainframe.add(turnInfo);
 
-
+        // actionlisteners
+        tbExit.addActionListener(e -> {
+            mainframe.dispose();
+        });
 
 
     }
