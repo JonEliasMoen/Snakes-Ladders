@@ -49,25 +49,13 @@ public class SnakesLadders {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         // board
-        JPanel[] fullboard = new JPanel[6];
-        JButton[][] Bboard = new JButton[6][6];
-
-        for (int i = 0; i < 6; i++) {
-            fullboard[i] = new JPanel();
-            for (int j = 0; j < 6; j++) {
-                Bboard[i][j] = new JButton(String.valueOf((5 - i) * 6 + (j + 1)));
-                Bboard[i][j].setPreferredSize(new Dimension(50,30));
-                fullboard[i].add(Bboard[i][j]);
-            }
-            mainPanel.add(fullboard[i]);
-        }
-
+        mainBoard.createBoard(mainPanel);
 
         // dice rolls
         JPanel dicePanel = new JPanel();
-        JTextField d1 = new JTextField("D1");
-        JTextField d2 = new JTextField("D2");
-        JTextField sum = new JTextField("sum:     ");
+        JTextField d1 = new JTextField("Dice1");
+        JTextField d2 = new JTextField("Dice2");
+        JTextField sum = new JTextField("Sum:     ");
         sum.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         JButton roll = new JButton("roll");
 
@@ -77,13 +65,21 @@ public class SnakesLadders {
 
         mainPanel.add(dicePanel);
 
-        // p1/p2 turn
+        // p1/p2 turn / info
         JPanel turnPanel = new JPanel();
+        turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.PAGE_AXIS));
+        JTextField divInfo = new JTextField("");
         JTextField turnInfo = new JTextField("Player turn:     ");
+
+        divInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        divInfo.setSize(20,30);
+        divInfo.setEditable(false);
+
         turnInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        turnInfo.setBounds(0,0,20,30);
+        turnInfo.setSize(20,30);
         turnInfo.setEditable(false);
-        turnPanel.add(turnInfo);
+
+        turnPanel.add(turnInfo); turnPanel.add(divInfo);
         mainPanel.add(turnPanel);
 
         // placement of mainPanel
@@ -93,6 +89,13 @@ public class SnakesLadders {
         // actionlisteners
         tbExit.addActionListener(e -> {
             mainframe.dispose();
+        });
+        roll.addActionListener(e->{
+            divInfo.setText("");
+            int[] dice = dh.roll(d1, d2, sum);
+            if(dice[0] == dice[1]){
+                divInfo.setText("Roll again!");
+            }
         });
 
     }
