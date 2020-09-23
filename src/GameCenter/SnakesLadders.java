@@ -18,8 +18,9 @@ public class SnakesLadders {
 
     final public diceHandler dh = new diceHandler();
     final public board mainBoard = new board();
+    int[] turnData = {0, 0}; // playerturn, maxplayers.
 
-
+    SnakePlayer p1 = new SnakePlayer();
     public SnakesLadders() {
         // mainframe
         JFrame mainframe = new JFrame("Snakes&Ladders");
@@ -56,7 +57,7 @@ public class SnakesLadders {
         JTextField d1 = new JTextField("Dice1");
         JTextField d2 = new JTextField("Dice2");
         JTextField sum = new JTextField("Sum:     ");
-        sum.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        sum.setBorder(BorderFactory.createEmptyBorder());
         JButton roll = new JButton("roll");
 
         d1.setEditable(false); d2.setEditable(false); sum.setEditable(false);
@@ -71,11 +72,11 @@ public class SnakesLadders {
         JTextField divInfo = new JTextField("");
         JTextField turnInfo = new JTextField("Player turn:     ");
 
-        divInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        divInfo.setBorder(BorderFactory.createEmptyBorder());
         divInfo.setSize(20,30);
         divInfo.setEditable(false);
 
-        turnInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        turnInfo.setBorder(BorderFactory.createEmptyBorder());
         turnInfo.setSize(20,30);
         turnInfo.setEditable(false);
 
@@ -91,7 +92,13 @@ public class SnakesLadders {
             mainframe.dispose();
         });
         roll.addActionListener(e->{
-            dh.roll(d1, d2, sum, divInfo);
+            int s = dh.roll(d1, d2, sum, divInfo);
+            turnData[0] += 1;
+            if (turnData[0] > turnData[1]){
+                turnData[0] = 0; // 0 = 1
+            }
+            p1.moveHandler(s, divInfo); // needs player array
+            mainBoard.move(p1, turnData[0]);
         });
 
     }

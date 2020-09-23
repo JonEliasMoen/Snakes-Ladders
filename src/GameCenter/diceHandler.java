@@ -6,7 +6,7 @@ public class diceHandler {
     public int[] dice = {0, 0, 0};
     public final int MAX = 6;
 
-    public int[] roll(JTextField d1, JTextField d2, JTextField sum, JTextField divInfo) {
+    public int roll(JTextField d1, JTextField d2, JTextField sum, JTextField divInfo) {
         Dice d = new Dice();
         divInfo.setText("");
         for(int i = 0; i<2; i++){
@@ -19,6 +19,6 @@ public class diceHandler {
         d1.setText(String.valueOf(dice[0]));
         d2.setText(String.valueOf(dice[1]));
         sum.setText("Sum: "+ dice[2]);
-        return dice;
+        return dice[2];
     }
 }

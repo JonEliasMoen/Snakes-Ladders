@@ -2,6 +2,8 @@ package GameCenter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class board {
     int[][] index = {{31,32,33,34,35,36},
@@ -16,13 +18,13 @@ public class board {
                     {0,0,0,0,0,0},
                     {0,0,0,0,0,0},
                     {1,0,0,0,0,0}};
+    ArrayList<SnakePlayer> players;
+    public JButton[][] Bboard = new JButton[6][6];
 
     public void createBoard(JPanel mainPanel) {
         JPanel fullboard = new JPanel();
         fullboard.setLayout(new GridLayout(6,6));
-        JButton[][] Bboard = new JButton[6][6];
         String text = "";
-
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j<6; j++){
                 text = "<html>"+index[i][j];
@@ -51,7 +53,9 @@ public class board {
     public void generateBoard() {
     }
 
-    public void move() {
+    public void move(SnakePlayer p1, int index) {
+        players.set(index, p1);
+
     }
 
     public void moveHandler() {
