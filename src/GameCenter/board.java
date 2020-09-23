@@ -26,7 +26,7 @@ public class board {
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j<6; j++){
                 text = "<html>"+index[i][j];
-                switch(map[i][j]){ // TODO: switch to listindexes. and internationalisation
+                switch(map[i][j]){
                     case 1:
                         text += "<br>Start";
                         break;
@@ -39,7 +39,6 @@ public class board {
                 Bboard[i][j] = new JButton(text);
                 Bboard[i][j].setPreferredSize(new Dimension(50,50));
                 fullboard.add(Bboard[i][j]);
-
             }
         }
 

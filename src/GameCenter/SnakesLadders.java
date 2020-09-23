@@ -91,11 +91,7 @@ public class SnakesLadders {
             mainframe.dispose();
         });
         roll.addActionListener(e->{
-            divInfo.setText("");
-            int[] dice = dh.roll(d1, d2, sum);
-            if(dice[0] == dice[1]){
-                divInfo.setText("Roll again!");
-            }
+            dh.roll(d1, d2, sum, divInfo);
         });
 
     }
