@@ -5,23 +5,23 @@ import java.util.ArrayList;
 
 public class SnakesLadders {
     public int[] wSize = {400, 450}; // hver celle er en classe eller struct?
-    public double[][] board = {{0, 0, 0, 0, 0, -3}, // -1.2 finish, -1.1 start
-            {0, 0, 0, 0, 0, 0}, // 1-n player n
-            {0, 0, 0, 0, 0, 0}, //
-            {0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0},
-            {-2, 0, 0, 0, 0, 0}};
 
     public ArrayList<ArrayList<Integer>> snakes;
     public ArrayList<ArrayList<Integer>> ladders;
-
+    public ArrayList<SnakePlayer> players = new ArrayList<>();
 
     final public diceHandler dh = new diceHandler();
     final public board mainBoard = new board();
     int[] turnData = {0, 0}; // playerturn, maxplayers.
 
-    SnakePlayer p1 = new SnakePlayer();
+    void varinit(){
+        SnakePlayer p1 = new SnakePlayer();
+        System.out.println(p1.x);
+        players.add(turnData[1], p1);
+    }
     public SnakesLadders() {
+        varinit();
+
         // mainframe
         JFrame mainframe = new JFrame("Snakes&Ladders");
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,13 +34,14 @@ public class SnakesLadders {
         mainframe.setLayout(null);
 
         //toolbar
-        Container contentPane = mainframe.getContentPane();
         JToolBar tb = new JToolBar();
         JButton tbStart = new JButton("Start");
         JButton tbReset = new JButton("Reset");
         JButton tbExit = new JButton("Exit");
+        JButton addPlayer = new JButton("Add Player");
 
-        tb.add(tbStart); tb.add(tbReset); tb.add(tbExit);
+        tb.add(tbStart); tb.add(addPlayer);
+        tb.add(tbReset); tb.add(tbExit);
         tb.setFloatable(false);
         tb.setBounds(0,0,400,20);
         mainframe.add(tb);
@@ -70,7 +71,7 @@ public class SnakesLadders {
         JPanel turnPanel = new JPanel();
         turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.PAGE_AXIS));
         JTextField divInfo = new JTextField("");
-        JTextField turnInfo = new JTextField("Player turn:     ");
+        JTextField turnInfo = new JTextField("Player turn:     "+turnData[0]+1);
 
         divInfo.setBorder(BorderFactory.createEmptyBorder());
         divInfo.setSize(20,30);
@@ -97,8 +98,15 @@ public class SnakesLadders {
             if (turnData[0] > turnData[1]){
                 turnData[0] = 0; // 0 = 1
             }
-            p1.moveHandler(s, divInfo); // needs player array
-            mainBoard.move(p1, turnData[0]);
+            SnakePlayer sp = players.get(turnData[0]);
+
+            sp.moveHandler(s, divInfo); // needs player array
+            mainBoard.move(sp, turnData[0]);
+            turnInfo.setText("Player turn:     "+turnData[0]+1);
+        });
+        addPlayer.addActionListener(e->{
+            final boolean add = players.add(new SnakePlayer());
+            turnData[1] += 1;
         });
 
     }

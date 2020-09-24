@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class SnakePlayer {
     public int x = 0; // index
-    int y = 5;
+    public int y = 5;
 
     public void setPos(int X, int Y){
         x = X; y = Y;
@@ -21,9 +21,16 @@ public class SnakePlayer {
             return true;
         }
     }
+    public void calcPosTest(){
+        System.out.println("x="+x);calcPos(12);
+        System.out.println("x="+x);
+    }
     public void calcPos(int sum){ // x=5, sum = 12,
-        x += sum;
-        while(x>5){ x -= 5; y -= 1; }
+        x += sum*((y%2 == 0)? -1 : 1);
+        while(x>5 || x<0){
+            x = ((y%2 == 0)? (x*-1-1) : 6-(x-5));
+            y -= 1;
+        }
     }
 }
 
