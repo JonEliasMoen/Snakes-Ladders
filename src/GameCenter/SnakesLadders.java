@@ -11,7 +11,7 @@ public class SnakesLadders {
 
     final public diceHandler dh = new diceHandler();
     final public board mainBoard = new board();
-    int[] turnData = {-1, 1}; // playerturn, maxplayers.
+    int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = true;
     void addPlayers(){
         players.add(0, new SnakePlayer());
@@ -93,10 +93,8 @@ public class SnakesLadders {
         roll.addActionListener(e->{
             int s = dh.roll(d1, d2, sum, divInfo);
             if(gameGoing) {
-                turnData[0] += 1; // fix turn
-                if (turnData[0] > turnData[1]) {
-                    turnData[0] = 0;
-                }
+
+
 
                 SnakePlayer sp = players.get(turnData[0]);
 
@@ -107,7 +105,11 @@ public class SnakesLadders {
                         gameGoing = false;
                     }
                 }
-                turnInfo.setText("Player turn:     P" + (turnData[0] + 1));
+                turnData[0] += 1; //  fix turn
+                if (turnData[0] > turnData[1]) {
+                    turnData[0] = 0;
+                }
+                turnInfo.setText("Player turn:     P" + (turnData[0]+1));
             }else{
                 turnInfo.setText("Game is finished, reset to play again!");
             }
