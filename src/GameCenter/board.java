@@ -53,7 +53,13 @@ public class board {
     }
 
     public void move(SnakePlayer p1, int index) {
-        Bboard[p1.y][p1.x].setText(getString(p1.y, p1.x)+"<br>P"+index+"</html>");
+        System.out.println(p1.x+" "+p1.y);
+        if(p1.x>-1 && p1.y>-1) {
+            Bboard[p1.oy][p1.ox].setText(getString(p1.ox, p1.oy)+"</html>");
+            Bboard[p1.y][p1.x].setText(getString(p1.x, p1.y) + "<br>P" + index + "</html>");
+        }else{
+            System.out.println("code error");
+        }
 
     }
 

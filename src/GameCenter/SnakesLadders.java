@@ -100,12 +100,12 @@ public class SnakesLadders {
             }
             SnakePlayer sp = players.get(turnData[0]);
 
-            sp.moveHandler(s, divInfo); // needs player array
-            mainBoard.move(sp, turnData[0]);
-            turnInfo.setText("Player turn:     "+turnData[0]+1);
+             // needs player array
+            if(!sp.moveHandler(s, divInfo)){mainBoard.move(sp, turnData[0]);}
+            turnInfo.setText("Player turn:     "+(turnData[0]+1));
         });
         addPlayer.addActionListener(e->{
-            final boolean add = players.add(new SnakePlayer());
+            players.add(new SnakePlayer());
             turnData[1] += 1;
         });
 
