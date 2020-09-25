@@ -43,17 +43,17 @@ public class board {
     }
     public void createBoard(JPanel mainPanel) {
         JPanel fullboard = new JPanel();
-        ImageIcon ladder = new ImageIcon("./ladder.png");
+        ImageIcon ladder = new ImageIcon("C:/Users/jon39/IdeaProjects/Snakes-Ladders/src/GameCenter/index.jpg");
         fullboard.setLayout(new GridLayout(6,6));
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j<6; j++){
                 Bboard[i][j] = new JButton(getString(j,i));
                 Bboard[i][j].setPreferredSize(new Dimension(50, 50));
-                Bboard[i][j].setIcon(ladder);
+
                 fullboard.add(Bboard[i][j]);
             }
         }
-
+        Bboard[3][3].setIcon(ladder);
         mainPanel.add(fullboard);
     }
 
