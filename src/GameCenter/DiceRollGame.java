@@ -1,9 +1,6 @@
 package GameCenter;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class DiceRollGame {
     final Player player1 = new Player();      //Creates new player1 object

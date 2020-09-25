@@ -1,8 +1,6 @@
 package GameCenter;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 public class MainMenu {
     public MainMenu() {

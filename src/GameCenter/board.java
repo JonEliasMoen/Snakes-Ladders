@@ -12,18 +12,20 @@ public class board {
                     {13,14,15,16,17,18},
                     {12,11,10,9,8,7},
                     {1,2,3,4,5,6}};
-    int[][] map = {{2,0,0,0,0,0},
-                    {0,0,0,0,0,0},
-                    {0,0,0,0,0,0},
-                    {0,0,0,0,0,0},
-                    {0,0,0,0,0,0},
-                    {1,0,0,0,0,0}};
-    ArrayList<SnakePlayer> players;
+    int[][] map = {{2, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0}};
+    ArrayList<Integer[]> playerPos = new ArrayList<>();
     public JButton[][] Bboard = new JButton[6][6];
 
-    public String getString(int x, int y){
-        String text = "<html>"+index[y][x];
-        switch(map[y][x]){
+    public String getString(int x, int y){ // TODO: color each player?
+        Integer[] pos = {x, y};
+        Integer[] item;
+        String text = "<html>" + index[y][x];
+        switch (map[y][x]) {
             case 1:
                 text += "<br>Start";
                 break;
@@ -31,18 +33,27 @@ public class board {
                 text += "<br>Finish";
                 break;
         }
-        return text;
+        for(int i = 0; i<playerPos.size(); i++){
+            item = playerPos.get(i);
+            if((item[0] == pos[0]) && (item[1] == pos[1])){
+                text += "<br>P" + (i + 1);
+            }
+        }
+        return text + "</html>";
     }
     public void createBoard(JPanel mainPanel) {
         JPanel fullboard = new JPanel();
+        ImageIcon ladder = new ImageIcon("./ladder.png");
         fullboard.setLayout(new GridLayout(6,6));
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j<6; j++){
-                Bboard[i][j] = new JButton(getString(j, i)+"</html>");
-                Bboard[i][j].setPreferredSize(new Dimension(50,50));
+                Bboard[i][j] = new JButton(getString(j,i));
+                Bboard[i][j].setPreferredSize(new Dimension(50, 50));
+                Bboard[i][j].setIcon(ladder);
                 fullboard.add(Bboard[i][j]);
             }
         }
+
         mainPanel.add(fullboard);
     }
 
@@ -53,14 +64,18 @@ public class board {
     }
 
     public void move(SnakePlayer p1, int index) {
-        System.out.println(p1.x+" "+p1.y);
-        if(p1.x>-1 && p1.y>-1) {
-            Bboard[p1.oy][p1.ox].setText(getString(p1.ox, p1.oy)+"</html>");
-            Bboard[p1.y][p1.x].setText(getString(p1.x, p1.y) + "<br>P" + (index+1) + "</html>");
-        }else{
-            System.out.println("code error");
+        Integer[] pos = {p1.x, p1.y};
+
+        if (playerPos.size() < index + 1) {
+            playerPos.add(index, pos);
+        } else {
+            playerPos.set(index, pos);
         }
 
+        if (p1.x > -1 && p1.y > -1) {
+            Bboard[p1.oy][p1.ox].setText(getString(p1.ox, p1.oy));
+            Bboard[p1.y][p1.x].setText(getString(p1.x, p1.y));
+        }
     }
 
     public void moveHandler() {
