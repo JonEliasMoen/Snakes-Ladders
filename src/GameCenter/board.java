@@ -56,7 +56,7 @@ public class board {
         System.out.println(p1.x+" "+p1.y);
         if(p1.x>-1 && p1.y>-1) {
             Bboard[p1.oy][p1.ox].setText(getString(p1.ox, p1.oy)+"</html>");
-            Bboard[p1.y][p1.x].setText(getString(p1.x, p1.y) + "<br>P" + index + "</html>");
+            Bboard[p1.y][p1.x].setText(getString(p1.x, p1.y) + "<br>P" + (index+1) + "</html>");
         }else{
             System.out.println("code error");
         }

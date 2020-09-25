@@ -1,6 +1,5 @@
 package GameCenter;
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class SnakesLadders {
@@ -12,15 +11,14 @@ public class SnakesLadders {
 
     final public diceHandler dh = new diceHandler();
     final public board mainBoard = new board();
-    int[] turnData = {0, 0}; // playerturn, maxplayers.
-
-    void varinit(){
-        SnakePlayer p1 = new SnakePlayer();
-        System.out.println(p1.x);
-        players.add(turnData[1], p1);
+    int[] turnData = {-1, 1}; // playerturn, maxplayers.
+    boolean gameGoing = true;
+    void addPlayers(){
+        players.add(0, new SnakePlayer());
+        players.add(1, new SnakePlayer());
     }
     public SnakesLadders() {
-        varinit();
+        addPlayers();
 
         // mainframe
         JFrame mainframe = new JFrame("Snakes&Ladders");
@@ -71,7 +69,7 @@ public class SnakesLadders {
         JPanel turnPanel = new JPanel();
         turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.PAGE_AXIS));
         JTextField divInfo = new JTextField("");
-        JTextField turnInfo = new JTextField("Player turn:     "+turnData[0]+1);
+        JTextField turnInfo = new JTextField("Player turn:     P1");
 
         divInfo.setBorder(BorderFactory.createEmptyBorder());
         divInfo.setSize(20,30);
@@ -94,15 +92,25 @@ public class SnakesLadders {
         });
         roll.addActionListener(e->{
             int s = dh.roll(d1, d2, sum, divInfo);
-            turnData[0] += 1;
-            if (turnData[0] > turnData[1]){
-                turnData[0] = 0; // 0 = 1
-            }
-            SnakePlayer sp = players.get(turnData[0]);
+            if(gameGoing) {
+                turnData[0] += 1; // fix turn
+                if (turnData[0] > turnData[1]) {
+                    turnData[0] = 0;
+                }
 
-             // needs player array
-            if(!sp.moveHandler(s, divInfo)){mainBoard.move(sp, turnData[0]);}
-            turnInfo.setText("Player turn:     "+(turnData[0]+1));
+                SnakePlayer sp = players.get(turnData[0]);
+
+                if (!sp.moveHandler(s, divInfo)) {
+                    mainBoard.move(sp, turnData[0]);
+                    if (sp.x == 0 && sp.y == 0) {
+                        divInfo.setText("Player " + (turnData[0] + 1) + " wins");
+                        gameGoing = false;
+                    }
+                }
+                turnInfo.setText("Player turn:     P" + (turnData[0] + 1));
+            }else{
+                turnInfo.setText("Game is finished, reset to play again!");
+            }
         });
         addPlayer.addActionListener(e->{
             players.add(new SnakePlayer());

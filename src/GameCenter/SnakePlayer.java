@@ -12,7 +12,6 @@ public class SnakePlayer {
         x = X; y = Y;
     }
     public boolean outside(int sum){
-        System.out.println(6-(x+sum-5));
         return (x-sum)<0 && y == 0 || (y == 1 && 6-(x+sum-5)<0);
     }
     public boolean moveHandler(int sum, JTextField divInfo){
@@ -22,10 +21,6 @@ public class SnakePlayer {
             return true;
         }
         return false;
-    }
-    public void calcPosTest(){
-        System.out.println("x="+x);calcPos(12);
-        System.out.println("x="+x);
     }
     public boolean calcPos(int sum){ // x=5, sum = 12,
         if(!outside(sum)) {
