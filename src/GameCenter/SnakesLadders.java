@@ -114,7 +114,7 @@ public class SnakesLadders {
             SnakePlayer sp = players.get(turnData[0]);
 
             if (!sp.moveHandler(s[2], divInfo)) {
-                mainBoard.move(sp, turnData[0]);
+                mainBoard.move(sp, turnData[0], divInfo);
                 if (sp.x == 0 && sp.y == 0) {
                     divInfo.setText("Player " + (turnData[0] + 1) + " wins");
                     gameGoing = false;
