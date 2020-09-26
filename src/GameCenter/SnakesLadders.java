@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class SnakesLadders {
-    public int[] wSize = {400, 450}; // hver celle er en classe eller struct?
+    public int[] wSize = {800, 900}; // 400, 450
 
     public ArrayList<ArrayList<Integer>> snakes;
     public ArrayList<ArrayList<Integer>> ladders;
@@ -25,7 +25,7 @@ public class SnakesLadders {
         mainframe.setSize(wSize[0], wSize[1]);   // set window size
         mainframe.setLocationRelativeTo(null); // middle of screen
         mainframe.setLayout(null); // no layout manager
-        mainframe.setResizable(false); // not resizable
+        mainframe.setResizable(true); // not resizable
         mainframe.setVisible(true); // is visable
         mainframe.setLayout(null);
 

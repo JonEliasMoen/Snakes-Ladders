@@ -22,7 +22,7 @@ public class SnakePlayer {
         }
         return false;
     }
-    public boolean calcPos(int sum){ // x=5, sum = 12,
+    public boolean calcPos(int sum){ // 6-((x+s)%6), (x+s)%6 også mulig
         if(!outside(sum)) {
             x += sum * ((y % 2 == 0) ? -1 : 1);
             while (x > 5 || x < 0) {
