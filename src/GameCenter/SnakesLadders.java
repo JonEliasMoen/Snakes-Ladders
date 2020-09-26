@@ -1,19 +1,33 @@
 package GameCenter;
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SnakesLadders {
     public int[] wSize = {800, 900}; // 400, 450
 
-    public ArrayList<ArrayList<Integer>> snakes;
-    public ArrayList<ArrayList<Integer>> ladders;
     public ArrayList<SnakePlayer> players = new ArrayList<>();
+
+
+
+    int[] ladderData = new int[3];
 
     final public diceHandler dh = new diceHandler();
     final public board mainBoard = new board();
     int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = false;
-
+    public JTextField divInfo;
+    public boolean canRoll = true;
+    int[] data = new int[5];
+    //public void ladderSet(int x, int y){
+    //    mainBoard.Bboard[y][x].addActionListener(e->{
+     //       if(canClickLadder){
+      //          SnakePlayer player = players.get(ladderData[2]);
+       //         player.setPos(ladderData[0], ladderData[1], true);
+        //        mainBoard.move(player, ladderData[2], new JTextField());
+         //   }
+        //});
+    //}
 
     public SnakesLadders() {
         addPlayers();
@@ -66,7 +80,7 @@ public class SnakesLadders {
         // p1/p2 turn / info
         JPanel turnPanel = new JPanel();
         turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.PAGE_AXIS));
-        JTextField divInfo = new JTextField("");
+        divInfo = new JTextField("");
         JTextField turnInfo = new JTextField("Player turn:     P1");
 
         divInfo.setBorder(BorderFactory.createEmptyBorder());
@@ -89,8 +103,12 @@ public class SnakesLadders {
             mainframe.dispose();
         });
         roll.addActionListener(e-> {
-            int[] s = dh.roll(d1, d2, sum, divInfo);
-            takeTurn(s, divInfo, turnInfo);
+            if(canRoll) {
+                int[] s = dh.roll(d1, d2, sum, divInfo);
+                takeTurn(s, divInfo, turnInfo);
+            }else{
+                divInfo.setText("player must click ladder/snake before new roll");
+            }
         });
         addPlayer.addActionListener(e->{
             players.add(new SnakePlayer());
@@ -110,15 +128,29 @@ public class SnakesLadders {
     }
 
     public void takeTurn(int[] s, JTextField divInfo, JTextField turnInfo) {
-        mainBoard.canClickLadder = false;
+
         if (gameGoing) {
             SnakePlayer sp = players.get(turnData[0]);
 
             if (!sp.moveHandler(s[2], divInfo)) {
-                mainBoard.move(sp, turnData[0], divInfo);
+                data = mainBoard.move(sp, turnData[0], divInfo);
                 if (sp.x == 0 && sp.y == 0) {
                     divInfo.setText("Player " + (turnData[0] + 1) + " wins");
                     gameGoing = false;
+                }
+                if(data[0] != -1){ // SNAKE/LADDER ACTION
+                    canRoll = false; // blocks reroll
+                    mainBoard.Bboard[data[4]][data[3]].addActionListener(e->{
+                        if(data[0] != -1) {
+                            canRoll = true;
+                            SnakePlayer sp2 = players.get(data[0]);
+                            sp2.setPos(data[1], data[2], true);
+                            players.set(data[0], sp2);
+                            mainBoard.move(sp2, turnData[0], divInfo); // DIG HERE!
+                            mainBoard.Bboard[data[4]][data[3]].removeActionListener(mainBoard.Bboard[data[4]][data[3]].getActionListeners()[0]);
+                            divInfo.setText("");
+                        }
+                    });
                 }
             }
             if (s[0] != s[1]) { // not roll again
