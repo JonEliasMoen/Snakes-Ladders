@@ -27,8 +27,8 @@ public class board {
     ArrayList<Integer[]> ladders = new ArrayList<>();
 
     public JButton[][] Bboard = new JButton[6][6];
-    public int Aladders = 3;
-    public int Asnakes = 4;
+    public int Aladders = 2;
+    public int Asnakes = 2;
 
     public int[][] blankSq(){
         int x = 0, y = 0;
@@ -38,7 +38,7 @@ public class board {
             x = (int) (Math.random()*5);
         }
         while(map[y2][x2] != 0){
-            while(y2 != y) {
+            while(y2 == y) {
                 y2 = (int) (Math.random() * 5);
             }
             x2 = (int) (Math.random()*5);
@@ -93,11 +93,11 @@ public class board {
     public void setProperties(JButton bt, int x, int y, ImageIcon ld, ImageIcon sk){
         if(map[y][x] > 2){ // ladder
             Bboard[y][x].setIcon(ld);
-            //Bboard[y][x].setBackground(new Color(0,(int) map[y][x]*125/Aladders,0));
+            Bboard[y][x].setBackground(new Color(0,(int) map[y][x]*125/Aladders,0));
         }
         if(map[y][x] < 0){ // snake
             Bboard[y][x].setIcon(sk);
-            //Bboard[y][x].setBackground(new Color((int) map[y][x]*-175/Asnakes,0,0));
+            Bboard[y][x].setBackground(new Color((int) Math.abs(map[y][x]*125/Asnakes),0,0));
         }
     }
     public void createBoard(JPanel mainPanel) {
