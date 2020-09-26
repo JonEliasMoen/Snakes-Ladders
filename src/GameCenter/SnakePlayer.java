@@ -7,8 +7,12 @@ public class SnakePlayer {
     public int y = 5;
     public int ox = 0;
     public int oy = 0;
+    public int index = 0;
 
-    public void setPos(int X, int Y){
+    public void setPos(int X, int Y, boolean ou){
+        if(ou){
+            ox = x; oy = y;
+        }
         x = X; y = Y;
     }
     public boolean outside(int sum){

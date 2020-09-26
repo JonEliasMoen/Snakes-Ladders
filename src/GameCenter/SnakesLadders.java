@@ -110,6 +110,7 @@ public class SnakesLadders {
     }
 
     public void takeTurn(int[] s, JTextField divInfo, JTextField turnInfo) {
+        mainBoard.canClickLadder = false;
         if (gameGoing) {
             SnakePlayer sp = players.get(turnData[0]);
 

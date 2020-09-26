@@ -17,21 +17,22 @@ public class board {
                         {13,14,15,16,17,18},
                         {12,11,10,9,8,7},
                         {1,2,3,4,5,6}};
-    int[][] map =  {{2, -1, 0, 0, 0, 0}, // Arrays.asList(array).indexOf(4);
+    int[][] map =  {{2, 0, 0, 0, 0, 0}, // Arrays.asList(array).indexOf(4);
                     {0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0, 0},
-                    {1, -1, 0, 0, 0, 0}};
+                    {1, 0, 0, 0, 0, 0}};
     ArrayList<Integer[]> playerPos = new ArrayList<>();
 
-    // fromY ==> toY.
-    HashMap<Integer, Integer> snakes = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> ladders = new HashMap<Integer, Integer>();
 
     public JButton[][] Bboard = new JButton[6][6];
-    public int Aladders = 0;
-    public int Asnakes = 0;
+    Boolean canClickLadder = false;
+    int[] ladderData = new int[2];
+    SnakePlayer moveplayer;
+
+    public int Aladders = 4;
+    public int Asnakes = 4;
 
     public int[][] blankSq(){
         int x =  (int) (Math.random()*5);
@@ -62,23 +63,12 @@ public class board {
             lc += 1;
             map[xy[0][1]][xy[0][0]] = lc; // {x,y}
             map[xy[1][1]][xy[1][0]] = lc;
-            if(xy[0][1] > xy[1][1]){ // smallest y to biggest y.
-                ladders.put(xy[0][1], xy[1][1]);
-            }else{
-                ladders.put(xy[1][1], xy[0][1]);
-            }
         }
         while(sc != Asnakes){ // snakes
             xy = blankSq();
             sc += 1;
             map[xy[0][1]][xy[0][0]] = -sc;
             map[xy[1][1]][xy[1][0]] = -sc;
-            System.out.println();
-            if(xy[0][1] < xy[1][1]){ // biggest y to smallest
-                snakes.put(xy[0][1], xy[1][1]);
-            }else{
-                snakes.put(xy[1][1], xy[0][1]);
-            }
         }
 
     }
@@ -135,6 +125,12 @@ public class board {
                 Bboard[i][j] = new JButton(getString(j,i));
                 Bboard[i][j].setPreferredSize(new Dimension(100, 100));
                 Bboard[i][j].setBackground(new Color(255,255,255));
+                Bboard[i][j].addActionListener(e->{
+                    if(canClickLadder){
+                        moveplayer.setPos(ladderData[0], ladderData[1], true);
+                        move(moveplayer, moveplayer.index, new JTextField());
+                    }
+                });
                 setProperties(Bboard[i][j], j, i, ladderIc, snakeIc);
                 fullboard.add(Bboard[i][j]);
             }
@@ -154,12 +150,22 @@ public class board {
                 for(j = 0; j<6 && going; j++){
                     if(map[i][j] == map[p1.y][p1.x] && p1.y != i){
                         going = false;
+                        divInfo.setText("P" + (index + 1) + " hit snake");
+                        p1.setPos(j, i, false);
                     }
                 }
             }
-            if(going == false) {
-                divInfo.setText("P" + (index + 1) + " hit snake");
-                p1.setPos(j-1, i-1);
+        }
+        if(map[p1.y][p1.x] > 2){ // hit snake, top or bottom
+            for(i = 0; i<p1.y && going; i++){
+                for(j = 0; j<6 && going; j++){
+                    if(map[i][j] == map[p1.y][p1.x] && p1.y != i){
+                        going = false;
+                        divInfo.setText("P" + (index + 1) + " ladder, click to go up");
+                        ladderData = new int[]{j, i};
+                        moveplayer = p1; moveplayer.index = index;
+                    }
+                }
             }
         }
 
