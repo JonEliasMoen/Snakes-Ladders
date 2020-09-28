@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SnakesLadders {
-    public int[] wSize = {800, 900}; // 400, 450
+    public int[] wSize = {600, 675}; // 400, 450
 
     public ArrayList<SnakePlayer> players = new ArrayList<>();
 
@@ -13,21 +13,12 @@ public class SnakesLadders {
     int[] ladderData = new int[3];
 
     final public diceHandler dh = new diceHandler();
-    final public board mainBoard = new board();
+    public board mainBoard = new board();
     int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = false;
     public JTextField divInfo;
     public boolean canRoll = true;
     int[] data = new int[5];
-    //public void ladderSet(int x, int y){
-    //    mainBoard.Bboard[y][x].addActionListener(e->{
-     //       if(canClickLadder){
-      //          SnakePlayer player = players.get(ladderData[2]);
-       //         player.setPos(ladderData[0], ladderData[1], true);
-        //        mainBoard.move(player, ladderData[2], new JTextField());
-         //   }
-        //});
-    //}
 
     public SnakesLadders() {
         addPlayers();
@@ -119,6 +110,17 @@ public class SnakesLadders {
             gameGoing = true;
             divInfo.setText("Game started, p1 click roll to begin");
         });
+        tbReset.addActionListener(e->{
+            canRoll = true; gameGoing = false;
+            turnData[0] = 0;
+            data = new int[5];
+            for(int i = 0; i<players.size(); i++){
+                SnakePlayer s = players.get(i);
+                s.setPos(0,5, true);
+
+                mainBoard.move(s, i, divInfo);
+            }
+        });
 
     }
 
@@ -133,7 +135,7 @@ public class SnakesLadders {
             SnakePlayer sp = players.get(turnData[0]);
 
             if (!sp.moveHandler(s[2], divInfo)) {
-                data = mainBoard.move(sp, turnData[0], divInfo, false);
+                data = mainBoard.move(sp, turnData[0], divInfo);
                 if (sp.x == 0 && sp.y == 0) {
                     divInfo.setText("Player " + (turnData[0] + 1) + " wins");
                     gameGoing = false;
@@ -147,7 +149,7 @@ public class SnakesLadders {
                             SnakePlayer sp2 = players.get(data[0]);
                             sp2.setPos(data[1], data[2], true);
                             players.set(data[0], sp2);
-                            mainBoard.move(sp2, data[0], divInfo, true); // DIG HERE!
+                            mainBoard.move(sp2, data[0], divInfo); // DIG HERE!
                             mainBoard.Bboard[data[4]][data[3]].removeActionListener(mainBoard.Bboard[data[4]][data[3]].getActionListeners()[0]);
                             divInfo.setText("");
                         }

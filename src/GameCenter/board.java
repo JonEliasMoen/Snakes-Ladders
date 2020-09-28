@@ -2,13 +2,9 @@ package GameCenter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.awt.Color;
 import java.lang.Math;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class board{
     int[][] index =    {{36,35,34,33,32,31},
@@ -75,20 +71,21 @@ public class board{
         }
 
     }
-    public int playerIndex(int x, int y){
+    public String playerString(int x, int y){
         Integer[] item;
         Integer[] pos = {x, y};
+        String text = "";
         for(int i = 0; i<playerPos.size(); i++){
             item = playerPos.get(i);
             if((item[0] == pos[0]) && (item[1] == pos[1])){
-                return (i + 1);
+                text += "<br>P"+(i + 1);
             }
         }
-        return -1;
+        return text;
     }
     public String getString(int x, int y){ // TODO: color each player?
         String text = "<html>" + index[y][x];
-        int pIndex = playerIndex(x,y);
+        String pText = playerString(x,y);
         switch (map[y][x]) {
             case 1:
                 text += "<br>Start";
@@ -97,9 +94,7 @@ public class board{
                 text += "<br>Finish";
                 break;
         }
-        if(pIndex != -1){
-            text += "<br>P" + pIndex;
-        }
+        text += pText;
         return text + "</html>";
     }
     public void setProperties(int x, int y, ImageIcon ld, ImageIcon sk){
@@ -109,7 +104,7 @@ public class board{
         if(map[y][x] < 0){ // snake
             Bboard[y][x].setIcon(sk);
         }
-        if(playerIndex(x, y) != -1){
+        if(playerString(x, y) != ""){
             Bboard[y][x].setBackground(new Color(0,125,0));
         }else{
             Bboard[y][x].setBackground(new Color(255,255,255));
@@ -132,7 +127,16 @@ public class board{
         }
         mainPanel.add(fullboard);
     }
-    public int[] move(SnakePlayer p1, int index, JTextField divInfo, boolean jump) {
+    public void resetBoard(){
+        playerPos = new ArrayList<>();
+        for(int i = 0; i<6; i++){
+            for(int j = 0; j<6; j++){
+                Bboard[i][j] = new JButton(getString(j,i));
+                setProperties(i,j, ladderIc, snakeIc);
+            }
+        }
+    }
+    public int[] move(SnakePlayer p1, int index, JTextField divInfo) {
         int i = 0, j = 0;
         int[] retdata = new int[]{-1,0,0,0,0};
         boolean going = true;
@@ -143,13 +147,13 @@ public class board{
                     if(map[i][j] == map[p1.y][p1.x] && p1.y != i){
                         going = false;
                         divInfo.setText("P" + (index + 1) + " hit snake, click to go down");
-                        retdata = new int[]{index, i, j, p1.x, p1.y};
+                        retdata = new int[]{index, j, i, p1.x, p1.y};
                         //p1.setPos(j, i, true);
                     }
                 }
             }
         }
-        if(map[p1.y][p1.x] > 2){ // hit snake, top or bottom
+        if(map[p1.y][p1.x] > 2){ // hit ladder, top or bottom
             for(i = 0; i<p1.y && going; i++){
                 for(j = 0; j<6 && going; j++){
                     if(map[i][j] == map[p1.y][p1.x] && p1.y != i){
