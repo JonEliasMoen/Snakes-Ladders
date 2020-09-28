@@ -133,11 +133,12 @@ public class SnakesLadders {
             SnakePlayer sp = players.get(turnData[0]);
 
             if (!sp.moveHandler(s[2], divInfo)) {
-                data = mainBoard.move(sp, turnData[0], divInfo);
+                data = mainBoard.move(sp, turnData[0], divInfo, false);
                 if (sp.x == 0 && sp.y == 0) {
                     divInfo.setText("Player " + (turnData[0] + 1) + " wins");
                     gameGoing = false;
                 }
+                System.out.println(turnData[0]);
                 if(data[0] != -1){ // SNAKE/LADDER ACTION
                     canRoll = false; // blocks reroll
                     mainBoard.Bboard[data[4]][data[3]].addActionListener(e->{
@@ -146,7 +147,7 @@ public class SnakesLadders {
                             SnakePlayer sp2 = players.get(data[0]);
                             sp2.setPos(data[1], data[2], true);
                             players.set(data[0], sp2);
-                            mainBoard.move(sp2, turnData[0], divInfo); // DIG HERE!
+                            mainBoard.move(sp2, data[0], divInfo, true); // DIG HERE!
                             mainBoard.Bboard[data[4]][data[3]].removeActionListener(mainBoard.Bboard[data[4]][data[3]].getActionListeners()[0]);
                             divInfo.setText("");
                         }

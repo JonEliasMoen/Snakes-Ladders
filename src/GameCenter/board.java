@@ -132,7 +132,7 @@ public class board{
         }
         mainPanel.add(fullboard);
     }
-    public int[] move(SnakePlayer p1, int index, JTextField divInfo) {
+    public int[] move(SnakePlayer p1, int index, JTextField divInfo, boolean jump) {
         int i = 0, j = 0;
         int[] retdata = new int[]{-1,0,0,0,0};
         boolean going = true;
