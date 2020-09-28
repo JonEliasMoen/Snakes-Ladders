@@ -1,13 +1,10 @@
 package GameCenter;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class DiceRollGame {
-    final Player player1 = new Player();      //Creates new player1 object
-    final Player player2 = new Player();      //Creates new player2 object
+    Player player1 = new Player();      //Creates new player1 object
+    Player player2 = new Player();      //Creates new player2 object
 
     public DiceRollGame() {             //Constructor for dice Game
         int width = 95;                 //width of certain elements used
