@@ -1,6 +1,5 @@
 package GameCenter;
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class SnakesLadders {
@@ -10,15 +9,13 @@ public class SnakesLadders {
 
 
 
-    int[] ladderData = new int[3];
-
     final public diceHandler dh = new diceHandler();
     public board mainBoard = new board();
     int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = false;
     public JTextField divInfo;
     public boolean canRoll = true;
-    int[] data = new int[5];
+    int[] specialMove = new int[5];
 
     public SnakesLadders() {
         addPlayers();
@@ -30,7 +27,7 @@ public class SnakesLadders {
         mainframe.setSize(wSize[0], wSize[1]);   // set window size
         mainframe.setLocationRelativeTo(null); // middle of screen
         mainframe.setLayout(null); // no layout manager
-        mainframe.setResizable(true); // not resizable
+        mainframe.setResizable(false); // not resizable
         mainframe.setVisible(true); // is visable
         mainframe.setLayout(null);
 
@@ -90,76 +87,81 @@ public class SnakesLadders {
         mainframe.add(mainPanel);
 
         // actionlisteners
-        tbExit.addActionListener(e -> {
-            mainframe.dispose();
-        });
+        tbExit.addActionListener(e -> mainframe.dispose()); // close window
         roll.addActionListener(e-> {
-            if(canRoll) {
-                int[] s = dh.roll(d1, d2, sum, divInfo);
-                takeTurn(s, divInfo, turnInfo);
+            if(canRoll) { // can roll
+                int[] s = dh.roll(d1, d2, sum, divInfo); // roll dice
+                takeTurn(s, divInfo, turnInfo); // take turn for this player
             }else{
                 divInfo.setText("player must click ladder/snake before new roll");
             }
         });
         addPlayer.addActionListener(e->{
-            players.add(new SnakePlayer());
-            turnData[1] += 1;
-            divInfo.setText("Player " + (turnData[1] + 1) + " added!");
+            if(!gameGoing) { // game is not started
+                players.add(new SnakePlayer()); // add player
+                turnData[1] += 1; // add max index
+                divInfo.setText("Player " + (turnData[1] + 1) + " added!"); // update info
+            }else{
+                divInfo.setText("Cant add player during game. reset  the game"); // tried to add player during game
+            }
         });
         tbStart.addActionListener(e->{
-            gameGoing = true;
+            gameGoing = true; // start game
             divInfo.setText("Game started, p1 click roll to begin");
         });
         tbReset.addActionListener(e->{
-            canRoll = true; gameGoing = false;
-            turnData[0] = 0;
-            data = new int[5];
-            for(int i = 0; i<players.size(); i++){
-                SnakePlayer s = players.get(i);
-                s.setPos(0,5, true);
-
-                mainBoard.move(s, i, divInfo);
+            canRoll = true; gameGoing = false; // reset global variables
+            turnData[0] = 0; // set turn to player 1
+            specialMove = new int[5]; // reset special move
+            for(int i = 0; i<players.size(); i++){ // loop all players
+                SnakePlayer s = players.get(i); // get player i
+                s.setPos(0,5); // set position to start
+                mainBoard.move(s, i, divInfo); // move player
             }
         });
 
     }
 
-    void addPlayers() {
+    void addPlayers() { // Add players to the game.
         players.add(0, new SnakePlayer());
         players.add(1, new SnakePlayer());
     }
 
-    public void takeTurn(int[] s, JTextField divInfo, JTextField turnInfo) {
+    public void takeTurn(int[] dice, JTextField divInfo, JTextField turnInfo) {
+        // take a turn in the game.
+        if (gameGoing) { // If the game is going
+            SnakePlayer sp = players.get(turnData[0]); // get snakeplayer object
 
-        if (gameGoing) {
-            SnakePlayer sp = players.get(turnData[0]);
+            if (!sp.moveHandler(dice[2], divInfo)) { // Is a legal move.
+                specialMove = mainBoard.move(sp, turnData[0], divInfo); // do the move
 
-            if (!sp.moveHandler(s[2], divInfo)) {
-                data = mainBoard.move(sp, turnData[0], divInfo);
-                if (sp.x == 0 && sp.y == 0) {
+                if (sp.x == 0 && sp.y == 0) { // player has won the game
                     divInfo.setText("Player " + (turnData[0] + 1) + " wins");
                     gameGoing = false;
                 }
-                System.out.println(turnData[0]);
-                if(data[0] != -1){ // SNAKE/LADDER ACTION
-                    canRoll = false; // blocks reroll
-                    mainBoard.Bboard[data[4]][data[3]].addActionListener(e->{
-                        if(data[0] != -1) {
-                            canRoll = true;
-                            SnakePlayer sp2 = players.get(data[0]);
-                            sp2.setPos(data[1], data[2], true);
-                            players.set(data[0], sp2);
-                            mainBoard.move(sp2, data[0], divInfo); // DIG HERE!
-                            mainBoard.Bboard[data[4]][data[3]].removeActionListener(mainBoard.Bboard[data[4]][data[3]].getActionListeners()[0]);
-                            divInfo.setText("");
+
+                if(specialMove[0] != -1){ // SNAKE/LADDER ACTION
+                    canRoll = false; // blocks other player of rolling
+                    // add actionListner for the button.
+                    mainBoard.Bboard[specialMove[4]][specialMove[3]].addActionListener(e->{
+                        if(specialMove[0] != -1) {  // just hit the ladder or snake
+                            canRoll = true; // set the other players can roll.
+                            SnakePlayer sp2 = players.get(specialMove[0]); // get the player
+                            sp2.setPos(specialMove[1], specialMove[2]); // move the player.
+                            players.set(specialMove[0], sp2); // be 100% sure its updated
+                            mainBoard.move(sp2, specialMove[0], divInfo); // move the player down the ladder
+
+                            // remove this actionlistener. cant go up ladder after again later.
+                            mainBoard.Bboard[specialMove[4]][specialMove[3]].removeActionListener(mainBoard.Bboard[specialMove[4]][specialMove[3]].getActionListeners()[0]);
+                            divInfo.setText(""); // reset divinfo
                         }
                     });
                 }
             }
-            if (s[0] != s[1]) { // not roll again
-                turnData[0] += 1; //  fix turn
-                if (turnData[0] > turnData[1]) {
-                    turnData[0] = 0;
+            if (dice[0] != dice[1]) { // not roll again
+                turnData[0] += 1; //  next players turn
+                if (turnData[0] > turnData[1]) { // goes over playercount
+                    turnData[0] = 0; // reset
                 }
                 turnInfo.setText("Player turn:     P" + (turnData[0] + 1));
             }
