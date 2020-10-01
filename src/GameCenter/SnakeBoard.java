@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.lang.Math;
 
-public class board{
+public class SnakeBoard {
     int[][] index =    {{36,35,34,33,32,31}, // index of every tile
                         {25,26,27,28,29,30},
                         {24,23,22,21,20,19},
@@ -28,9 +28,9 @@ public class board{
     ImageIcon ladderIc; // icon for snake and ladder
     ImageIcon snakeIc;
 
-    board(){
-        ladderIc = new ImageIcon("C:/Users/jon39/IdeaProjects/Snakes-Ladders/src/GameCenter/index.jpg");
-        snakeIc = new ImageIcon("C:/Users/jon39/IdeaProjects/Snakes-Ladders/src/GameCenter/snake.png");
+    SnakeBoard(){
+        ladderIc = new ImageIcon("./src/GameCenter/index.jpg");
+        snakeIc = new ImageIcon("./src/GameCenter/snake.png");
     }
 
     public int[][] blankSq(){ // find 2 blank squares on map to use.

@@ -10,7 +10,7 @@ public class SnakesLadders {
 
 
     final public diceHandler dh = new diceHandler();
-    public board mainBoard = new board();
+    public SnakeBoard mainBoard = new SnakeBoard();
     int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = false;
     public JTextField divInfo;

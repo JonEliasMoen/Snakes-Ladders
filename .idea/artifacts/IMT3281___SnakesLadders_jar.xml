@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="IMT3281---SnakesLadders:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/IMT3281___SnakesLadders_jar</output-path>
+    <root id="archive" name="IMT3281---SnakesLadders.jar">
+      <element id="module-output" name="IMT3281---SnakesLadders" />
+    </root>
+  </artifact>
+</component>

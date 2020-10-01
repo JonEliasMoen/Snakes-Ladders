@@ -2,7 +2,7 @@ package GameCenter;
 import javax.swing.*;
 
 public class Help {
-    String helpText = "This is a multiplayer game. \nYou can add more players under file - add players. \nAdd as many players as you want then click start to begin. \nEach player clicks roll, and the player piece is moved according to the sum of the two dice. \nWhen a player lands on a snake the player must go down it, the same with ladders. \nYou must also click the player icon when this happens. \nthe game will alert you. \nThe first to the finish box wins";
+    String helpText = "This is a multiplayer game. \nYou can add more players under file - add players. \nAdd as many players as you want then click start to begin. \nEach player clicks roll, and the player piece is moved according to the sum of the two dice. \nWhen a player lands on a snake the player must go down it, the same with ladders. \nYou must also click the player icon when this happens. \nthe game will alert you. \n If the two dice are equal player rolls again. \nThe first to the finish box wins";
     public Help(){
         JFrame mainframe = new JFrame("Snakes&Ladders");
 
