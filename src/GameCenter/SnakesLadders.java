@@ -1,14 +1,15 @@
 package GameCenter;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
 public class SnakesLadders {
     public int[] wSize = {600, 675}; // 400, 450
+
     public ArrayList<SnakePlayer> players = new ArrayList<>();
 
+
     final public diceHandler dh = new diceHandler();
-    public board mainBoard = new board();
+    public SnakeBoard mainBoard = new SnakeBoard();
     int[] turnData = {0, 1}; // playerturn, maxplayers.
     boolean gameGoing = false;
     public JTextField divInfo;
@@ -29,20 +30,40 @@ public class SnakesLadders {
         mainframe.setVisible(true); // is visable
         mainframe.setLayout(null);
 
-        //toolbar
-        JToolBar tb = new JToolBar();
-        JButton tbStart = new JButton("Start");
-        JButton tbReset = new JButton("Reset");
-        JButton tbExit = new JButton("Exit");
-        JButton addPlayer = new JButton("Add Player");
+        //MenuBar
+        JMenuBar mb = new JMenuBar();
 
-        tb.add(tbStart);
-        tb.add(addPlayer);
-        tb.add(tbReset);
-        tb.add(tbExit);
-        tb.setFloatable(false);
-        tb.setBounds(0, 0, 400, 20);
-        mainframe.add(tb);
+        //MenuBar - file
+        JMenu File = new JMenu("File");
+
+        JMenuItem mbStart = new JMenuItem("Start");
+        JMenuItem mbReset = new JMenuItem("Reset");
+        JMenuItem mbExit = new JMenuItem("Exit");
+        JMenuItem addPlayer = new JMenuItem("Add Player");
+
+        File.add(mbStart);
+        File.add(addPlayer);
+        File.add(mbReset);
+        File.add(mbExit);
+
+        //MenuBar - file
+        JMenu Help = new JMenu("Help");
+        JMenuItem mbHelp = new JMenuItem("How to Play");
+        Help.add(mbHelp);
+
+        //MenuBar - About
+        JMenu About = new JMenu("About");
+        JTextArea version = new JTextArea("Version 1.0.0");
+        JTextArea author = new JTextArea("Jon Elias Moen");
+        About.add(version);
+        About.add(author);
+
+
+        mb.add(File);
+        mb.add(Help);
+        mb.add(About);
+        mb.setBounds(0, 0, 400, 20);
+        mainframe.add(mb);
 
         // mainPanel
         JPanel mainPanel = new JPanel();
@@ -92,7 +113,7 @@ public class SnakesLadders {
         mainframe.add(mainPanel);
 
         // actionlisteners
-        tbExit.addActionListener(e -> mainframe.dispose()); // close window
+        mbExit.addActionListener(e -> mainframe.dispose()); // close window
         roll.addActionListener(e -> {
             if (canRoll) { // can roll
                 int[] s = dh.roll(d1, d2, sum, divInfo); // roll dice
@@ -110,21 +131,32 @@ public class SnakesLadders {
                 divInfo.setText("Cant add player during game. reset  the game"); // tried to add player during game
             }
         });
-        tbStart.addActionListener(e -> {
+        mbStart.addActionListener(e -> {
+            resetGame(); // make sure game is resetted
             gameGoing = true; // start game
             divInfo.setText("Game started, p1 click roll to begin");
+
         });
-        tbReset.addActionListener(e -> {
-            canRoll = true;
-            gameGoing = false; // reset global variables
-            turnData[0] = 0; // set turn to player 1
-            specialMove = new int[5]; // reset special move
-            for (int i = 0; i < players.size(); i++) { // loop all players
-                SnakePlayer s = players.get(i); // get player i
-                s.setPos(0, 5); // set position to start
-                mainBoard.move(s, i, divInfo); // move player
-            }
+        mbReset.addActionListener(e -> {
+            resetGame();
         });
+        mbHelp.addActionListener(e -> {
+            Help hp = new Help();
+        });
+
+    }
+
+    void resetGame() {
+        canRoll = true;
+        gameGoing = false; // reset global variables
+        turnData[0] = 0; // set turn to player 1
+        specialMove = new int[5]; // reset special move
+        for (int i = 0; i < players.size(); i++) { // loop all players
+            SnakePlayer s = players.get(i); // get player i
+            s.setPos(0, 5); // set position to start
+            mainBoard.move(s, i, divInfo); // move player
+        }
+        divInfo.setText("Game Resetted");
     }
 
     void addPlayers() { // Add players to the game.

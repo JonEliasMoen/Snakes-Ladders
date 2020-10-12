@@ -3,22 +3,20 @@ package GameCenter;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.awt.Color;
-import java.lang.Math;
 
-public class board{
-    int[][] index =    {{36,35,34,33,32,31}, // index of every tile
-                        {25,26,27,28,29,30},
-                        {24,23,22,21,20,19},
-                        {13,14,15,16,17,18},
-                        {12,11,10,9,8,7},
-                        {1,2,3,4,5,6}};
-    int[][] map =  {{2, -1, 0, 0, 0, 0}, // map. 1=start 2=finish
-                    {0, -1, 0, 0, 0, 0}, // negative integers = snake
-                    {0, 0, 0, 0, 0, 0}, // positive integers > 2 = ladder
-                    {0, 0, 0, 0, 0, 0}, // has one snake placed. to counter deadlock situation.
-                    {0, 0, 0, 0, 0, 0},
-                    {1, 0, 0, 0, 0, 0}};
+public class SnakeBoard {
+    int[][] index = {{36, 35, 34, 33, 32, 31}, // index of every tile
+            {25, 26, 27, 28, 29, 30},
+            {24, 23, 22, 21, 20, 19},
+            {13, 14, 15, 16, 17, 18},
+            {12, 11, 10, 9, 8, 7},
+            {1, 2, 3, 4, 5, 6}};
+    int[][] map = {{2, -1, 0, 0, 0, 0}, // map. 1=start 2=finish
+            {0, -1, 0, 0, 0, 0}, // negative integers = snake
+            {0, 0, 0, 0, 0, 0}, // positive integers > 2 = ladder
+            {0, 0, 0, 0, 0, 0}, // has one snake placed. to counter deadlock situation.
+            {0, 0, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0}};
 
     ArrayList<Integer[]> playerPos = new ArrayList<>(); // holds position of players.
     public JButton[][] Bboard = new JButton[6][6]; // button array
@@ -28,29 +26,29 @@ public class board{
     ImageIcon ladderIc; // icon for snake and ladder
     ImageIcon snakeIc;
 
-    board(){
-        ladderIc = new ImageIcon("C:/Users/jon39/IdeaProjects/Snakes-Ladders/src/GameCenter/index.jpg");
-        snakeIc = new ImageIcon("C:/Users/jon39/IdeaProjects/Snakes-Ladders/src/GameCenter/snake.png");
+    SnakeBoard() {
+        ladderIc = new ImageIcon("./src/GameCenter/index.jpg");
+        snakeIc = new ImageIcon("./src/GameCenter/snake.png");
     }
 
-    public int[][] blankSq(){ // find 2 blank squares on map to use.
-        int x =  (int) (Math.random()*5);
-        int y =  (int) (Math.random()*5);
-        int x2 = (int) (Math.random()*5);
-        int y2 = (int) (Math.random()*5);
+    public int[][] blankSq() { // find 2 blank squares on map to use.
+        int x = (int) (Math.random() * 5);
+        int y = (int) (Math.random() * 5);
+        int x2 = (int) (Math.random() * 5);
+        int y2 = (int) (Math.random() * 5);
 
-        while(map[y][x] != 0){ // generate new x,y until empty
-            y = (int) (Math.random()*5);
-            x = (int) (Math.random()*5);
+        while (map[y][x] != 0) { // generate new x,y until empty
+            y = (int) (Math.random() * 5);
+            x = (int) (Math.random() * 5);
         }
-        while((map[y2][x2] != 0) || (y2 == y)){ // generate new x2,y2 until empty
+        while ((map[y2][x2] != 0) || (y2 == y)) { // generate new x2,y2 until empty
             y2 = (int) (Math.random() * 5); // cant have ladder on same colomn,
-            x2 = (int) (Math.random()*5); // aka y must not be equal to y2
+            x2 = (int) (Math.random() * 5); // aka y must not be equal to y2
         }
-        if((map[y][x] + map[y2][x2] != 0)){
+        if ((map[y][x] + map[y2][x2] != 0)) {
             blankSq(); // in case of permutation error
         }
-        return new int[][]{{x,y}, {x2,y2}};
+        return new int[][]{{x, y}, {x2, y2}};
     }
     public void generateBoard(){ // generate random snake ladder board within parameters
         int sc = 0; // index to use for snake
